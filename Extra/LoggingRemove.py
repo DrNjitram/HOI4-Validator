@@ -85,11 +85,9 @@ def event(cpath):
             size = os.path.getsize(cpath + "\\events\\" + filename)
             if size < 100:
                 continue
-            try:
-                lines = outputfile.readlines()
-            except UnicodeDecodeError:
-                print(filename)
-                continue
+
+            lines = outputfile.readlines()
+
             outputfile.close()
             outputfile = open(cpath + "\\events\\" + filename, 'w', 'utf-8-sig')
             outputfile.truncate()
@@ -131,7 +129,9 @@ def decision(cpath):
             size = os.path.getsize(cpath + "\\common\\decisions\\" + filename)
             if size < 100:
                 continue
+
             lines = outputfile.readlines()
+
             outputfile.close()
             outputfile = open(cpath + "\\common\\decisions\\" + filename, 'w', 'utf-8')
             outputfile.truncate()
@@ -156,7 +156,7 @@ def main():
         else:
             cpath += ' ' + string
 
-    if cpath is "":
+    if cpath == "":
         print("Expected a path to a mod folder.")
     else:
         event(cpath)

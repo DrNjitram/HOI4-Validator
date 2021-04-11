@@ -180,7 +180,7 @@ def event(cpath):
                 if line_number in ids:
                     extra = ""
                     event_id = idss[ids.index(line_number)]
-                    if event_id not in has_add_keyword:
+                    if event_id not in has_add_keyword or True:
                         if '#' in line:
                             extra = " #" + line.split('#')[len(line.split('#'))-1].strip()
                         if '.' not in event_id:
@@ -191,7 +191,7 @@ def event(cpath):
                     else:
                         insert_in_trigger = has_add_keyword[event_id]
 
-                elif line_number == insert_in_trigger:
+                elif line_number == insert_in_trigger and False:
                     white_space = line[:-len(line.lstrip())]
                     if '#' in line:
                         extra = " #" + line.split('#')[len(line.split('#')) - 1].strip()
@@ -350,7 +350,7 @@ def decision_improved(cpath):
                         # Keep track of the latest decision found
                         latest_found = line_number
                         # Add an default reference to this decision
-                        found_decisions[line_number] = [0, 0, 0, False]
+                        found_decisions[line_number] = [0, 0, 0, False, 0]
 
                     if latest_found in found_decisions:
                         if 'complete_effect' in line:
@@ -364,6 +364,9 @@ def decision_improved(cpath):
 
                         elif 'target_trigger' in line or 'targets' in line:
                             found_decisions[latest_found][3] = True
+
+                        elif 'cancel_effect' in line:
+                            found_decisions[latest_found][4] = line_number
 
 
                     if '{' in line:
@@ -384,7 +387,7 @@ def decision_improved(cpath):
             found_decisions = found_decisions_filtered
 
             id = ""
-            index = [-1, -1, -1, False]
+            index = [-1, -1, -1, False, -1]
 
             main_line_numbers = list(found_decisions.keys())
 
@@ -427,6 +430,13 @@ def decision_improved(cpath):
                             replacement_text = temp[0] + "{\n\n\t\t\tlog = \"[GetDateText]: [Root.GetName]: Decision timeout " + id + "\"\n" + "{".join(temp)[len(temp[0]) + 1:] + "\n"
                         else:
                             replacement_text = "\t\ttimeout_effect = {\n\t\t\tlog = \"[GetDateText]: [Root.GetName]: Decision timeout " + id + "\"\n"
+
+                    elif line_number == index[4]:
+                        if '}' in line:
+                            temp = line.split("{")
+                            replacement_text = temp[0] + "{\n\n\t\t\tlog = \"[GetDateText]: [Root.GetName]: Decision cancelled " + id + "\"\n" + "{".join(temp)[len(temp[0]) + 1:] + "\n"
+                        else:
+                            replacement_text = "\t\tcancel_effect = {\n\t\t\tlog = \"[GetDateText]: [Root.GetName]: Decision cancelled " + id + "\"\n"
 
 
                     outputfile.write(replacement_text)
@@ -522,7 +532,7 @@ def main():
         else:
             cpath += ' ' + string
 
-    if cpath is "":
+    if cpath == "":
         print("Expected a path to a mod folder.")
     else:
         ttime = 0

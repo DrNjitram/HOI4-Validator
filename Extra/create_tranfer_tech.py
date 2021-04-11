@@ -4,7 +4,7 @@ from os import path
 
 
 def main(xors):
-    mod_path = r'C:\Users\Martijn\Documents\Paradox Interactive\Hearts of Iron IV\mod\KRBU'
+    mod_path = r'C:\Users\Martijn\Documents\Paradox Interactive\Hearts of Iron IV\mod\KR'
     tech_folder = path.join(mod_path, 'common', 'technologies')
     scripted_effects = path.join(mod_path, 'common', 'scripted_effects')
 
@@ -34,6 +34,12 @@ def main(xors):
 #
 transfer_technology = {
 \thidden_effect = {
+\t\tmeta_effect = {
+\t\t\ttext = {
+\t\t\t\tset_research_slots = [research_slots]
+\t\t\t}
+\t\t\tresearch_slots = PREV.amount_research_slots
+\t\t}
 """
 
         new_scripted_effect.write(intro_string)
@@ -68,7 +74,7 @@ transfer_technology = {
 
 def get_xors():
     xors = dict()
-    mod_path = r'C:\Users\Martijn\Documents\Paradox Interactive\Hearts of Iron IV\mod\KRBU'
+    mod_path = r'C:\Users\Martijn\Documents\Paradox Interactive\Hearts of Iron IV\mod\KR'
     tech_folder = path.join(mod_path, 'common', 'technologies')
 
     for filename in listdir(tech_folder):

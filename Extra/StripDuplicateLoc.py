@@ -11,7 +11,7 @@ hoi4_loc = dict()
 
 for filename in listdir(os.path.join(hoi4_folder, "localisation")):
     if language in filename:
-        with  open(os.path.join(hoi4_folder, "localisation", filename), 'r', 'utf-8-sig') as file:
+        with open(os.path.join(hoi4_folder, "localisation", filename), 'r', 'utf-8-sig') as file:
             lines = file.readlines()
             for line in lines:
                 line = line.strip()
@@ -26,7 +26,7 @@ for filename in listdir(os.path.join(hoi4_folder, "localisation")):
 
 for filename in listdir(os.path.join(eaw_folder, "localisation", "replace")):
     if language in filename:
-        with  open(os.path.join(eaw_folder, "localisation", "replace", filename), 'r', 'utf-8-sig') as file:
+        with open(os.path.join(eaw_folder, "localisation", "replace", filename), 'r', 'utf-8-sig') as file:
             lines = file.readlines()
             for line in lines:
                 line = line.strip()

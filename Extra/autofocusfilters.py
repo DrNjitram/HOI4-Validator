@@ -57,7 +57,7 @@ FOCUS_FILTER_AIRFORCE_BONUS
 search_filters = {XXX XXX XX}
 """
 
-eaw_folder = r'C:\Users\Martijn\Documents\Paradox Interactive\Hearts of Iron IV\mod\equestria_dev'
+eaw_folder = r'C:\Users\Martijn\Documents\Paradox Interactive\Hearts of Iron IV\mod\KR'
 
 idea_markers = dict()
 
@@ -83,16 +83,13 @@ for filename in listdir(os.path.join(eaw_folder, "common", "ideas")):
         if level == 3 and "modifier" in line:
             check_shit = True
 
-        #if check_shit and "}" in line and level == 3:
-        #    check_shit = False
-
         if check_shit:
             if (result := get_keywords(line.split("=")[0].strip())) is not None:
                 current_keywords.add(result)
 
         if level == 3 and "}" in line and ("modifier" in line or "{" not in line):
             check_shit = False
-            idea_markers[idea] = current_keywords
+            idea_markers[idea.lower()] = current_keywords
             #print(idea, current_keywords)
             current_keywords = set()
 
@@ -117,7 +114,7 @@ for filename in listdir(os.path.join(eaw_folder, "common", "national_focus")):
     find_ideas = False
 
 
-    for line in lines:
+    for lineno, line in enumerate(lines):
         orig_line = line[:]
         line = line.strip()
         if line.startswith('#'):
@@ -142,7 +139,15 @@ for filename in listdir(os.path.join(eaw_folder, "common", "national_focus")):
                 if arg[1] == '{':
                     find_ideas = True
                 else:
-                    current_keywords.update(idea_markers[arg[1]])
+                    try:
+                        if "{" in arg[1]:
+                            arg[1] = arg[1].split("{")[1].strip()
+                        if "}" in arg[1]:
+                            arg[1] = arg[1].split("}")[0].strip()
+                        current_keywords.update(idea_markers[arg[1].lower()])
+                    except KeyError:
+                        print(filename, line, lineno)
+                        exit()
             if (result := get_keywords(arg[0])) is not None:
                 current_keywords.add(result)
 
