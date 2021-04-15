@@ -1,3 +1,15 @@
+# This is a forked version because i still use and maintain some scripts that were part of the original
+
+These scripts mostly reside in the Extra folder and are, in particular
+	Add logging and remove logging
+	Autofocusfilter
+	some other random stuff
+
+None of these scripts can be ran as is, or well, you should look through them before running since some paths are hardcoded.
+Add logging and remove logging need to have the first argument be the path to the mod
+
+THESE SCRIPTS ARE SUPER INVASIVE. CHECK IF EVERYTHING WORKS BEFORE PUSHING
+
 # HOI4-Validator
 Home of the validator for Hearts of Iron 4, help very much welcome!
 

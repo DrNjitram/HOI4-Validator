@@ -152,7 +152,7 @@ def event(cpath):
                     else:
                         triggered = True
                         new_event = False
-                if line.strip().startswith('id') and new_event is True :
+                if line.strip().startswith('id') and new_event is True:
                     if triggered is False:
                         new_event = False
                         event_id = line.split('=')[1].strip()
@@ -231,6 +231,8 @@ def idea(cpath):
             line_number = 0
             ids = []
             lines = file.readlines()
+            has_add_keyword = {}
+
             for line in lines:
                 line_number += 1
                 if '#' in line:
@@ -243,6 +245,7 @@ def idea(cpath):
                     if level == 2:
                         if 'on_add = { log = ' not in lines[line_number]:
                             #print(line.split('=')[0].strip())
+                            idea_id = line.split('=')[0].strip()
                             ids.append(line_number)
 
                 if line.strip().startswith(adding_keyword):
@@ -258,7 +261,7 @@ def idea(cpath):
             outputfile = open(os.path.join(cpath, "common", "ideas", filename), 'w', 'utf-8')
             outputfile.truncate()
 
-            idea_id = "THIS SHOULNT EVER BE SEEN"
+            idea_id = "THIS SHOULDN'T EVER BE SEEN"
 
             for line in lines:
                 line_number += 1
@@ -280,7 +283,13 @@ def idea(cpath):
                         extra = " #" + line.split('#')[len(line.split('#')) - 1].strip()
 
                     if '}' in line:
-                        command = line.split("{")[1].split("}")[0].strip()
+                        try:
+                            command = line.split("{")[1].split("}")[0].strip()
+                        except:
+                            print(line_number)
+                            print(filename)
+                            print(line)
+                            exit(-1)
                         replacement_text = white_space + adding_keyword + " = {" + "\n" + white_space + "\t" + "log = \"[GetDateText]: [Root.GetName]: add idea " + idea_id + "\"\n" + white_space + "\t" + command + extra + "\n" + white_space + "}\n"
                     else:
                         replacement_text = white_space + adding_keyword + " = {" + extra + "\n" + white_space + "\t" + "log = \"[GetDateText]: [Root.GetName]: add idea " + idea_id + "\"\n"

@@ -118,7 +118,12 @@ def idea(cpath):
                 if 'log = ' not in line:
                     outputfile.write(line)
                 else:
-                    outputfile.write("")
+                    if '}' in line:
+                        outputfile.write("")
+                    elif "on_add" in line:
+                        outputfile.write("\t\t\ton_add = {\n")
+                    else:
+                        outputfile.write("")
 
 
 def decision(cpath):
@@ -147,7 +152,6 @@ def decision(cpath):
 
 def main():
     cpath = sys.argv[1]
-
 
     ok = 0
     for string in sys.argv:
